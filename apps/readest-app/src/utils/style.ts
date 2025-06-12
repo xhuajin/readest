@@ -108,8 +108,9 @@ const getColorStyles = (
     html, body {
       color: ${fg};
     }
-    div, p, span, pre {
+    div, p, span, pre , h1, h2, h3, h4, h5, h6 {
       ${overrideColor ? `background-color: ${bg} !important;` : ''}
+      ${overrideColor ? `color: ${fg} !important;` : ''}
     }
     a:any-link {
       ${overrideColor ? `color: ${primary};` : isDarkMode ? `color: lightblue;` : ''}
