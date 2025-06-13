@@ -19,6 +19,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useResponsiveSize } from '@/hooks/useResponsiveSize';
 import { saveViewSettings } from '../../utils/viewSettingsHelper';
+import { CODE_LANGUAGES, CodeLanguage, manageSyntaxHighlighting } from '@/utils/highlightjs';
+import Select from '@/components/Select';
 import ThemeEditor from './ThemeEditor';
 
 const ColorPanel: React.FC<{ bookKey: string }> = ({ bookKey }) => {
@@ -27,7 +29,7 @@ const ColorPanel: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     useThemeStore();
   const { envConfig } = useEnv();
   const { settings, setSettings } = useSettingsStore();
-  const { getViewSettings } = useReaderStore();
+  const { getView, getViewSettings } = useReaderStore();
   const viewSettings = getViewSettings(bookKey)!;
   const [invertImgColorInDark, setInvertImgColorInDark] = useState(
     viewSettings.invertImgColorInDark,
@@ -36,9 +38,11 @@ const ColorPanel: React.FC<{ bookKey: string }> = ({ bookKey }) => {
   const iconSize16 = useResponsiveSize(16);
   const iconSize24 = useResponsiveSize(24);
   const [editTheme, setEditTheme] = useState<CustomTheme | null>(null);
-  const [customThems, setCustomThemes] = useState<Theme[]>([]);
+  const [customThemes, setCustomThemes] = useState<Theme[]>([]);
   const [showCustomThemeEditor, setShowCustomThemeEditor] = useState(false);
   const [overrideColor, setOverrideColor] = useState(viewSettings.overrideColor!);
+  const [codeHighlighting, setcodeHighlighting] = useState(viewSettings.codeHighlighting!);
+  const [codeLanguage, setCodeLanguage] = useState(viewSettings.codeLanguage!);
 
   useEffect(() => {
     if (invertImgColorInDark === viewSettings.invertImgColorInDark) return;
@@ -51,6 +55,24 @@ const ColorPanel: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     saveViewSettings(envConfig, bookKey, 'overrideColor', overrideColor);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [overrideColor]);
+
+  useEffect(() => {
+    let update = false; // check if we need to update syntax highlighting
+    if (codeHighlighting !== viewSettings.codeHighlighting) {
+      saveViewSettings(envConfig, bookKey, 'codeHighlighting', codeHighlighting);
+      update = true;
+    }
+    if (codeLanguage !== viewSettings.codeLanguage) {
+      saveViewSettings(envConfig, bookKey, 'codeLanguage', codeLanguage);
+      update = true;
+    }
+    if (!update) return;
+    const view = getView(bookKey);
+    if (!view) return;
+    const docs = view.renderer.getContents();
+    docs.forEach(({ doc }) => manageSyntaxHighlighting(doc, viewSettings));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [codeHighlighting, codeLanguage]);
 
   useEffect(() => {
     const customThemes = settings.globalReadSettings.customThemes ?? [];
@@ -157,7 +179,7 @@ const ColorPanel: React.FC<{ bookKey: string }> = ({ bookKey }) => {
           <div>
             <h2 className='mb-2 font-medium'>{_('Theme Color')}</h2>
             <div className='grid grid-cols-3 gap-4'>
-              {themes.concat(customThems).map(({ name, label, colors, isCustomizale }) => (
+              {themes.concat(customThemes).map(({ name, label, colors, isCustomizale }) => (
                 <label
                   key={name}
                   className={`relative flex cursor-pointer flex-col items-center justify-center rounded-lg p-4 shadow-md ${
@@ -198,6 +220,36 @@ const ColorPanel: React.FC<{ bookKey: string }> = ({ bookKey }) => {
                 <PiPlus size={iconSize24} />
                 <span>{_('Custom')}</span>
               </label>
+            </div>
+          </div>
+
+          <div className='w-full'>
+            <h2 className='mb-2 font-medium'>{_('Code Highlighting')}</h2>
+            <div className='card border-base-200 bg-base-100 border shadow'>
+              <div className='divide-base-200'>
+                <div className='config-item'>
+                  <span className=''>{_('Enable Code Highlighting')}</span>
+                  <input
+                    type='checkbox'
+                    className='toggle'
+                    checked={codeHighlighting}
+                    onChange={() => setcodeHighlighting(!codeHighlighting)}
+                  />
+                </div>
+
+                <div className='config-item'>
+                  <span className=''>{_('Language Selection')}</span>
+                  <Select
+                    value={codeLanguage}
+                    onChange={(event) => setCodeLanguage(event.target.value as CodeLanguage)}
+                    options={CODE_LANGUAGES.map((lang) => ({
+                      value: lang,
+                      label: lang,
+                    }))}
+                    disabled={!codeHighlighting}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </>

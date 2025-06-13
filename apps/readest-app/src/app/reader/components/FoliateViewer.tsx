@@ -32,6 +32,7 @@ import { isCJKLang } from '@/utils/lang';
 import { transformContent } from '@/services/transformService';
 import { lockScreenOrientation } from '@/utils/bridge';
 import { useTextTranslation } from '../hooks/useTextTranslation';
+import { manageSyntaxHighlighting } from '@/utils/highlightjs';
 
 const FoliateViewer: React.FC<{
   bookKey: string;
@@ -115,6 +116,11 @@ const FoliateViewer: React.FC<{
       setViewSettings(bookKey, { ...viewSettings });
 
       mountAdditionalFonts(detail.doc, isCJKLang(bookData.book?.primaryLanguage));
+
+      // only call on load if we have highlighting turned on.
+      if (viewSettings.codeHighlighting) {
+        manageSyntaxHighlighting(detail.doc, viewSettings);
+      }
 
       if (!detail.doc.isEventListenersAdded) {
         // listened events in iframes are posted to the main window

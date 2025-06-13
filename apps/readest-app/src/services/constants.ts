@@ -121,6 +121,8 @@ export const DEFAULT_BOOK_STYLE: BookStyle = {
   overrideFont: false,
   overrideLayout: false,
   overrideColor: false,
+  codeHighlighting: false,
+  codeLanguage: 'auto-detect',
   userStylesheet: '',
 };
 
