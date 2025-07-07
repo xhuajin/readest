@@ -272,16 +272,18 @@ export abstract class BaseAppService implements AppService {
     }
   }
 
-  async deleteBook(book: Book, includingUploaded = false): Promise<void> {
-    const fps = [getRemoteBookFilename(book), getCoverFilename(book)];
-    const localDeleteFps = [getLocalBookFilename(book), getCoverFilename(book)];
-    for (const fp of localDeleteFps) {
-      if (await this.fs.exists(fp, 'Books')) {
-        await this.fs.removeFile(fp, 'Books');
+  async deleteBook(book: Book, includingUploaded = false, includingLocal = true): Promise<void> {
+    if (includingLocal) {
+      const localDeleteFps = [getLocalBookFilename(book), getCoverFilename(book)];
+      for (const fp of localDeleteFps) {
+        if (await this.fs.exists(fp, 'Books')) {
+          await this.fs.removeFile(fp, 'Books');
+        }
       }
     }
-    for (const fp of fps) {
-      if (includingUploaded) {
+    if (includingUploaded) {
+      const fps = [getRemoteBookFilename(book), getCoverFilename(book)];
+      for (const fp of fps) {
         console.log('Deleting uploaded file:', fp);
         const cfp = `${CLOUD_BOOKS_SUBDIR}/${fp}`;
         try {
@@ -291,8 +293,11 @@ export abstract class BaseAppService implements AppService {
         }
       }
     }
-    book.deletedAt = Date.now();
-    book.downloadedAt = null;
+
+    if (includingLocal) {
+      book.deletedAt = Date.now();
+      book.downloadedAt = null;
+    }
     if (includingUploaded) {
       book.uploadedAt = null;
     }
