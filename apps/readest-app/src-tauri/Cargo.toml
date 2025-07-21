@@ -15,7 +15,7 @@ name = "readestlib"
 crate-type = ["staticlib", "cdylib", "lib"]
 
 [build-dependencies]
-tauri-build = { version = "2.1.1", features = [] }
+tauri-build = { version = "2.3.0", features = [] }
 
 [dependencies]
 serde_json = "1.0"
