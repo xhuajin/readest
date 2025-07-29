@@ -60,7 +60,7 @@ export const useThemeStore = create<ThemeState>((set, get) => {
       set({ systemIsDarkMode: mediaQuery.matches, isDarkMode });
     };
 
-    mediaQuery.addEventListener('change', handleSystemThemeChange);
+    mediaQuery?.addEventListener('change', handleSystemThemeChange);
   }
 
   return {
