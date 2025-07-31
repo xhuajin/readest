@@ -6,7 +6,7 @@ import { Book } from '@/types/book';
 import { BookMetadata } from '@/libs/document';
 import { useEnv } from '@/context/EnvContext';
 import { useTranslation } from '@/hooks/useTranslation';
-import { formatAuthors, formatTitle } from '@/utils/book';
+import { flattenContributors, formatAuthors, formatPublisher, formatTitle } from '@/utils/book';
 import { FormField } from './FormField';
 import { IMAGE_ACCEPT_FORMATS, SUPPORTED_IMAGE_EXTS } from '@/services/constants';
 import { isTauriAppPlatform } from '@/services/environment';
@@ -107,7 +107,7 @@ const BookDetailEdit: React.FC<BookDetailEditProps> = ({
     {
       field: 'publisher',
       label: _('Publisher'),
-      value: metadata.publisher || '',
+      value: formatPublisher(metadata.publisher || ''),
       placeholder: _('Enter publisher'),
     },
     {
@@ -135,7 +135,7 @@ const BookDetailEdit: React.FC<BookDetailEditProps> = ({
     {
       field: 'subject',
       label: _('Subjects'),
-      value: Array.isArray(metadata.subject) ? metadata.subject.join(',') : metadata.subject || '',
+      value: flattenContributors(metadata.subject || []),
       placeholder: _('Fiction, Science, History'),
     },
     {
