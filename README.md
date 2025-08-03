@@ -136,13 +136,13 @@ To get started with Readest, follow these steps to clone and build the project.
 ```bash
 git clone https://github.com/readest/readest.git
 cd readest
-git submodule update --init --recursive
 ```
 
 ### 2. Install Dependencies
 
 ```bash
 # might need to rerun this when code is updated
+git submodule update --init --recursive
 pnpm install
 # copy pdfjs-dist to Next.js public directory
 pnpm --filter @readest/readest-app setup-pdfjs
