@@ -220,10 +220,20 @@ const FoliateViewer: React.FC<{
       await import('foliate-js/view.js');
       const view = wrappedFoliateView(document.createElement('foliate-view') as FoliateView);
       view.id = `foliate-view-${bookKey}`;
+
+      // 在打开书籍之前设置连续滚动属性
+      const viewSettings = getViewSettings(bookKey)!;
+      if (viewSettings.scrolled && viewSettings.continuousScroll) {
+        view.setAttribute('continuous-scroll', 'true');
+        console.log('设置连续滚动属性为 true');
+      } else {
+        view.setAttribute('continuous-scroll', 'false');
+        console.log('设置连续滚动属性为 false');
+      }
+
       document.body.append(view);
       containerRef.current?.appendChild(view);
 
-      const viewSettings = getViewSettings(bookKey)!;
       const writingMode = viewSettings.writingMode;
       if (writingMode) {
         const settingsDir = getBookDirFromWritingMode(writingMode);

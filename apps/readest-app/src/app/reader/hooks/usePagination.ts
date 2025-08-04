@@ -148,6 +148,22 @@ export const usePagination = (
     const renderer = viewRef.current?.renderer;
     const viewSettings = getViewSettings(bookKey)!;
     if (renderer && viewSettings.scrolled && viewSettings.continuousScroll) {
+      // 检查是否使用连续分页器 - 尝试多种检测方式
+      const tagName = (renderer as any).tagName?.toLowerCase();
+      const isContinuousPaginator = tagName === 'continuous-paginator' || 
+                                   (renderer as any).constructor?.name === 'ContinuousPaginator' ||
+                                   (renderer as any).getVisibleChapterCount !== undefined;
+
+      console.log('tagName:', tagName, 'isContinuousPaginator:', isContinuousPaginator);
+      console.log('renderer type:', (renderer as any).constructor?.name);
+      
+      if (isContinuousPaginator) {
+        // 连续分页器自己处理章节加载，我们只需要确保滚动事件被正确触发
+        // 连续分页器会在内部监听滚动事件并自动加载相邻章节
+        return;
+      }
+
+      // 原有的分页器逻辑
       const doScroll = () => {
         // may have overscroll where the start is greater than 0
         if (renderer.start <= scrollDelta && scrollDelta > threshold) {

@@ -119,8 +119,9 @@ const ControlPanel: React.FC<SettingsPanelPanelProp> = ({ bookKey, onRegisterRes
         <div className='card border-base-200 bg-base-100 border shadow'>
           <div className='divide-base-200 divide-y'>
             <div className='config-item'>
-              <span className=''>{_('Scrolled Mode')}</span>
+              <label htmlFor='scrolledMode' className=''>{_('Scrolled Mode')}</label>
               <input
+                id='scrolledMode'
                 type='checkbox'
                 className='toggle'
                 checked={isScrolledMode}
@@ -128,8 +129,9 @@ const ControlPanel: React.FC<SettingsPanelPanelProp> = ({ bookKey, onRegisterRes
               />
             </div>
             <div className='config-item'>
-              <span className=''>{_('Continuous Scroll')}</span>
+              <label htmlFor="continuousScroll" className=''>{_('Continuous Scroll')}</label>
               <input
+                id='continuousScroll'
                 type='checkbox'
                 className='toggle'
                 checked={isContinuousScroll}
