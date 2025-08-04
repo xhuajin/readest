@@ -95,7 +95,6 @@
   "Speak": "Озвучити",
   "Subjects": "Теми",
   "System Fonts": "Системні шрифти",
-  "TTS not supported in this device": "TTS не підтримується на цьому пристрої",
   "Theme Color": "Колір теми",
   "Theme Mode": "Режим теми",
   "Translate": "Перекласти",
@@ -468,5 +467,8 @@
   "Failed to create checkout session": "Не вдалося створити сесію оформлення замовлення",
   "Storage": "Сховище",
   "Terms of Service": "Умови обслуговування",
-  "Privacy Policy": "Політика конфіденційності"
+  "Privacy Policy": "Політика конфіденційності",
+  "Disable Double Click": "Вимкнути подвійне клацання",
+  "TTS not supported for this document": "TTS не підтримується для цього документа",
+  "Reset Password": "Скинути пароль"
 }

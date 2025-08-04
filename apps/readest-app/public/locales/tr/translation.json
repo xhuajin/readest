@@ -95,7 +95,6 @@
   "Speak": "Konuş",
   "Subjects": "Konular",
   "System Fonts": "Sistem Yazı Tipleri",
-  "TTS not supported in this device": "Bu cihazda TTS desteklenmiyor",
   "Theme Color": "Tema Rengi",
   "Theme Mode": "Tema Modu",
   "Translate": "Çevir",
@@ -460,5 +459,8 @@
   "Failed to create checkout session": "Ödeme oturumu oluşturma başarısız oldu",
   "Storage": "Depolama",
   "Terms of Service": "Hizmet Şartları",
-  "Privacy Policy": "Gizlilik Politikası"
+  "Privacy Policy": "Gizlilik Politikası",
+  "Disable Double Click": "Çift Tıklamayı Devre Dışı Bırak",
+  "TTS not supported for this document": "TTS bu belge için desteklenmiyor",
+  "Reset Password": "Şifreyi Sıfırla"
 }

@@ -94,7 +94,6 @@
   "Speak": "Sprechen",
   "Subjects": "Themen",
   "System Fonts": "System-Schriftarten",
-  "TTS not supported in this device": "TTS wird auf diesem Gerät nicht unterstützt",
   "Theme Color": "Themenfarbe",
   "Theme Mode": "Themenmodus",
   "Translate": "Übersetzen",
@@ -460,5 +459,8 @@
   "Failed to create checkout session": "Fehler beim Erstellen der Checkout-Sitzung",
   "Storage": "Speicher",
   "Terms of Service": "Allgemeine Geschäftsbedingungen",
-  "Privacy Policy": "Datenschutzbestimmungen"
+  "Privacy Policy": "Datenschutzbestimmungen",
+  "Disable Double Click": "Doppelklick deaktivieren",
+  "TTS not supported for this document": "TTS wird für dieses Dokument nicht unterstützt",
+  "Reset Password": "Passwort zurücksetzen"
 }

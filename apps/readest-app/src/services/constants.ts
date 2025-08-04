@@ -105,6 +105,7 @@ export const DEFAULT_BOOK_LAYOUT: BookLayout = {
   scrolled: false,
   disableClick: false,
   swapClickArea: false,
+  disableDoubleClick: false,
   volumeKeysToFlip: false,
   continuousScroll: false,
   maxColumnCount: 2,
@@ -143,6 +144,7 @@ export const DEFAULT_MOBILE_VIEW_SETTINGS: Partial<ViewSettings> = {
   animated: true,
   defaultFont: 'Sans-serif',
   marginBottomPx: 16,
+  disableDoubleClick: true,
 };
 
 export const DEFAULT_CJK_VIEW_SETTINGS: Partial<ViewSettings> = {
@@ -656,4 +658,24 @@ export const TRANSLATED_LANGS = {
   'zh-TW': '正體中文',
 };
 
+export const TRANSLATOR_LANGS: Record<string, string> = {
+  ...TRANSLATED_LANGS,
+  no: 'Norsk',
+  sv: 'Svenska',
+  fi: 'Suomi',
+  da: 'Dansk',
+  cs: 'Čeština',
+  hu: 'Magyar',
+  ro: 'Română',
+  bg: 'Български',
+  hr: 'Hrvatski',
+  lt: 'Lietuvių',
+  sl: 'Slovenščina',
+  sk: 'Slovenčina',
+};
+
 export const SUPPORTED_LANGS: Record<string, string> = { ...TRANSLATED_LANGS, zh: '中文' };
+
+export const SUPPORTED_LANGNAMES: Record<string, string> = Object.fromEntries(
+  Object.entries(SUPPORTED_LANGS).map(([code, name]) => [name, code]),
+);

@@ -6,7 +6,7 @@ import { Book } from '@/types/book';
 import { BookMetadata } from '@/libs/document';
 import { useEnv } from '@/context/EnvContext';
 import { useTranslation } from '@/hooks/useTranslation';
-import { formatAuthors, formatTitle } from '@/utils/book';
+import { flattenContributors, formatAuthors, formatPublisher, formatTitle } from '@/utils/book';
 import { FormField } from './FormField';
 import { IMAGE_ACCEPT_FORMATS, SUPPORTED_IMAGE_EXTS } from '@/services/constants';
 import { isTauriAppPlatform } from '@/services/environment';
@@ -107,7 +107,7 @@ const BookDetailEdit: React.FC<BookDetailEditProps> = ({
     {
       field: 'publisher',
       label: _('Publisher'),
-      value: metadata.publisher || '',
+      value: formatPublisher(metadata.publisher || ''),
       placeholder: _('Enter publisher'),
     },
     {
@@ -135,7 +135,7 @@ const BookDetailEdit: React.FC<BookDetailEditProps> = ({
     {
       field: 'subject',
       label: _('Subjects'),
-      value: Array.isArray(metadata.subject) ? metadata.subject.join(',') : metadata.subject || '',
+      value: flattenContributors(metadata.subject || []),
       placeholder: _('Fiction, Science, History'),
     },
     {
@@ -180,8 +180,8 @@ const BookDetailEdit: React.FC<BookDetailEditProps> = ({
       files = (await selectImageFileTauri()) as string[];
       if (appService && files.length > 0) {
         metadata.coverImageFile = files[0]!;
-        const tempName = 'cover-temp.png';
-        const cachePrefix = appService.fs.getPrefix('Cache');
+        const tempName = `cover-${Date.now()}.png`;
+        const cachePrefix = await appService.fs.getPrefix('Cache');
         await appService.fs.copyFile(files[0]!, tempName, 'Cache');
         metadata.coverImageUrl = await appService.fs.getURL(`${cachePrefix}/${tempName}`);
         setNewCoverImageUrl(metadata.coverImageUrl!);
@@ -224,7 +224,7 @@ const BookDetailEdit: React.FC<BookDetailEditProps> = ({
                 'border border-gray-300 bg-white hover:bg-gray-50',
                 'disabled:cursor-not-allowed disabled:opacity-50',
                 'text-sm sm:text-xs',
-                isCoverLocked && '!text-base-content !bg-base-200',
+                isCoverLocked ? '!text-base-content !bg-base-200' : '!text-gray-500',
               )}
               title={_('Change cover image')}
             >

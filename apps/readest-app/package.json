@@ -1,6 +1,6 @@
 {
   "name": "@readest/readest-app",
-  "version": "0.9.68",
+  "version": "0.9.69",
   "private": true,
   "scripts": {
     "dev": "dotenv -e .env.tauri -- next dev",
@@ -38,7 +38,8 @@
     "upload": "NEXT_PUBLIC_APP_PLATFORM=web opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "check:optional-chaining": "count=$(grep -rno '\\?\\.[a-zA-Z_$]' .next/static/chunks/* out/_next/static/chunks/* | wc -l); if [ \"$count\" -gt 0 ]; then echo '❌ Optional chaining found in output!'; exit 1; else echo '✅ No optional chaining found.'; fi",
-    "check:all": "pnpm check:optional-chaining",
+    "check:translations": "count=$(grep -rno '__STRING_NOT_TRANSLATED__' public/locales/* | wc -l); if [ \"$count\" -gt 0 ]; then echo '❌ Untranslated strings found!'; exit 1; else echo '✅ All strings translated.'; fi",
+    "check:all": "pnpm check:optional-chaining && pnpm check:translations",
     "build-check": "pnpm build && pnpm build-web && pnpm check:all"
   },
   "dependencies": {
@@ -73,11 +74,13 @@
     "cssbeautify": "^0.3.1",
     "dayjs": "^1.11.13",
     "foliate-js": "workspace:*",
+    "franc-min": "^6.2.0",
     "highlight.js": "^11.11.1",
     "i18next": "^24.2.0",
     "i18next-browser-languagedetector": "^8.0.2",
     "i18next-http-backend": "^3.0.1",
     "iso-639-2": "^3.0.2",
+    "iso-639-3": "^3.0.1",
     "js-md5": "^0.8.3",
     "jwt-decode": "^4.0.0",
     "marked": "^15.0.12",
